@@ -1,18 +1,20 @@
 package main
 import (
 	"fmt"
-	"net/url" 
+	"bytes"
+	"io"
+	"net/http" 
 	"os"
 	"github.com/joho/godotenv"
 )
 
-type Content struct {
-	Contents []struct{
-		Parts []struct{
-			Text string `json:"text"`
-		} `json:"parts"`
-	} `json:"contents"`
-}
+// type Content struct {
+// 	Contents []struct{
+// 		Parts []struct{
+// 			Text string `json:"text"`
+// 		} `json:"parts"`
+// 	} `json:"contents"`
+// }
 
 
 func main(){
@@ -26,20 +28,33 @@ func main(){
 		  {
 			"parts": [
 			  {
-				"text": "give me a simple motivational quote.\nThe the quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote"
+				"text": "give me a random motivational quote.\nThe the quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote - VERY IMPORTANT: Don't repeat previous quotes"
 			  }
 			]
 		  }
 		]
 	  }`)
 
-	var content Content
-	json.Unmarshal(jsonRequestData, &content)
 
-	//resp, err := http.Post("http://example.com/upload", "image/jpeg", &buf)
+	key := os.Getenv("GEMINI_API_KEY")
+	url := fmt.Sprintf("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=%s", key)
+	
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonRequestData))
+	if err != nil {
+			message := "Fail to request API: \n " + fmt.Sprintf("%s", err)
+			panic(message)
+		}
 
-	//fmt.Printf("The quote for today is: \n\n%s", quote)
-	var key = os.Getenv("GEMINI_API_KEY")
-	fmt.Printf("%s", key)
+	defer resp.Body.Close()
+	
+	fmt.Println(resp.StatusCode)
 
+	// Read the entire response body
+	bodyBytes, err := io.ReadAll(resp.Body)
+
+	// Convert the byte slice to a string and print it
+	bodyString := string(bodyBytes)
+	fmt.Println("Response Body:\n", bodyString)
+	//fmt.Printf(resp)
+	
 }
