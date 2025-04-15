@@ -1,11 +1,19 @@
 package main
 import (
 	"fmt"
-	//"net/url" 
+	"net/url" 
 	"os"
-
 	"github.com/joho/godotenv"
 )
+
+type Content struct {
+	Contents []struct{
+		Parts []struct{
+			Text string `json:"text"`
+		} `json:"parts"`
+	} `json:"contents"`
+}
+
 
 func main(){
 	err := godotenv.Load()
@@ -13,7 +21,20 @@ func main(){
 		panic("Wasn't able to load .env")
 	}
 
-	//var quote = "The sun himself is weak when he first rises, and gathers strength and courage as the day gets on. - Charles Dickens."
+	jsonRequestData := []byte(`{
+		"contents": [
+		  {
+			"parts": [
+			  {
+				"text": "give me a simple motivational quote.\nThe the quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote"
+			  }
+			]
+		  }
+		]
+	  }`)
+
+	var content Content
+	json.Unmarshal(jsonRequestData, &content)
 
 	//resp, err := http.Post("http://example.com/upload", "image/jpeg", &buf)
 
