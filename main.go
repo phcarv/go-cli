@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io"
 	"net/http" 
+	"encoding/json"
 	"os"
 	"github.com/joho/godotenv"
 )
@@ -15,6 +16,16 @@ import (
 // 		} `json:"parts"`
 // 	} `json:"contents"`
 // }
+
+type GeminiResponse struct {
+	Candidates []struct{
+		Content struct{
+			Parts []struct{
+				Text string `json:"text"`
+			} `json:"parts"`
+		} `json:"content"`
+	} `json:"candidates"`
+}
 
 
 func main(){
@@ -28,7 +39,10 @@ func main(){
 		  {
 			"parts": [
 			  {
-				"text": "give me a random motivational quote.\nThe the quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote - VERY IMPORTANT: Don't repeat previous quotes"
+				"text": "Consider that you are a wise writter that knows all the quotes in the world. \n Give me a random quote.\nThe quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote(if it is a famous author, otherwise will be \"Unknown\")"
+			  },
+			  {
+				"text": "use this seed for randomizing your answer: 42"
 			  }
 			]
 		  }
@@ -46,15 +60,14 @@ func main(){
 		}
 
 	defer resp.Body.Close()
-	
-	fmt.Println(resp.StatusCode)
 
-	// Read the entire response body
 	bodyBytes, err := io.ReadAll(resp.Body)
 
-	// Convert the byte slice to a string and print it
-	bodyString := string(bodyBytes)
-	fmt.Println("Response Body:\n", bodyString)
-	//fmt.Printf(resp)
+	var geminiResponse GeminiResponse
+	json.Unmarshal(bodyBytes, &geminiResponse)
+
+	quote := geminiResponse.Candidates[0].Content.Parts[0].Text
+
+	fmt.Println(quote)
 	
 }
