@@ -3,9 +3,15 @@
     {
       "parts": [
         {
-          "text": "give me a simple motivational quote.\nThe the quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote"
+          "text": "Consider that you are a wise writter that knows all the quotes in the world. \n Give me 5 random quotes.\nThe quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote(if it is a famous author, otherwise will be \"Unknown\")"
+        },
+        {
+          "text": "use this seed for randomizing your answer: 42"
         }
       ]
     }
-  ]
+  ],
+  "generationConfig": {
+    "candidate_count": 5
+  }
 }

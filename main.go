@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"io"
 	"net/http" 
-	"encoding/json"
+	//"encoding/json"
 	"os"
 	"github.com/joho/godotenv"
 )
@@ -39,15 +39,16 @@ func main(){
 		  {
 			"parts": [
 			  {
-				"text": "Consider that you are a wise writter that knows all the quotes in the world. \n Give me a random quote.\nThe quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote(if it is a famous author, otherwise will be \"Unknown\")"
-			  },
-			  {
-				"text": "use this seed for randomizing your answer: 42"
+				"text": "Consider that you are a wise writter that knows all the quotes in the world. \n Give me a random short phrase.\nThe quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote(if it is a famous author, otherwise will be \"Unknown\")\n Also consider that I'm using this for a motivational application, I need the most randomness of responses possible"
 			  }
 			]
 		  }
-		]
-	  }`)
+		],
+		"generationConfig": {
+		  "candidate_count": 5
+		}
+	  }
+	  `)
 
 
 	key := os.Getenv("GEMINI_API_KEY")
@@ -60,14 +61,17 @@ func main(){
 		}
 
 	defer resp.Body.Close()
+	
+	fmt.Println(resp.StatusCode)
 
 	bodyBytes, err := io.ReadAll(resp.Body)
+	bodyString := string(bodyBytes)
 
-	var geminiResponse GeminiResponse
-	json.Unmarshal(bodyBytes, &geminiResponse)
+	//var geminiResponse GeminiResponse
+	//json.Unmarshal(bodyBytes, &geminiResponse)
 
-	quote := geminiResponse.Candidates[0].Content.Parts[0].Text
+	//quote := geminiResponse.Candidates[0].Content.Parts[0].Text
 
-	fmt.Println(quote)
+	fmt.Println("Response Body:\n", bodyString)
 	
 }
