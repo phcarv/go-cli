@@ -3,19 +3,11 @@ import (
 	"fmt"
 	"bytes"
 	"io"
-	"net/http" 
-	//"encoding/json"
+	"net/http"
 	"os"
 	"github.com/joho/godotenv"
 )
 
-// type Content struct {
-// 	Contents []struct{
-// 		Parts []struct{
-// 			Text string `json:"text"`
-// 		} `json:"parts"`
-// 	} `json:"contents"`
-// }
 
 type GeminiResponse struct {
 	Candidates []struct{
