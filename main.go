@@ -31,7 +31,10 @@ func main(){
 		  {
 			"parts": [
 			  {
-				"text": "Consider that you are a wise writter that knows all the quotes in the world. \n Give me a random short phrase.\nThe quote must be in the following format: \"the quote itself\" - the author of the quote.\nInside of the double quotes you will put the quote and after the - you will put the name of the author of the quote(if it is a famous author, otherwise will be \"Unknown\")\n Also consider that I'm using this for a motivational application, I need the most randomness of responses possible. Think that you are uncapable of repeating your self for this same api_key, so everytime you get a request from this specfic api token you will send a different quote"
+				"text": "Consider that you are a wise writter that knows all the verses from the bible, I need you to give me a quote/verse from the bible in the following format:\n \" The bible verse \" - Reference to the verse. \n So inside of the double quotes you will insert a random verse and after the dash(-) you will put the reference like: John 3:16"
+			  },
+			  {
+				"text": "The quote should be for helping me on a sad day"
 			  }
 			]
 		  }
